@@ -1,0 +1,22 @@
+peerjs:
+  image: miyatama/peerjs
+  volumes: 
+    - ${PWD}/conf/peerjs-config/run.sh:/run.sh
+    - ${PWD}/conf/peerjs-config/app.js:/peerjs/app.js
+    - ${PWD}/sslkey:/sslkey
+  ports:
+    - "9000:9000"
+
+frontend:
+  image: miyatama/peerjsfrontend 
+  volumes: 
+    - ${PWD}/conf/peerjsfrontend-config/html:/usr/share/nginx/html
+    - ${PWD}/conf/peerjsfrontend-config/default.conf:/etc/nginx/conf.d/default.conf
+    - ${PWD}/sslkey/server.crt:/etc/nginx/server.crt
+    - ${PWD}/sslkey/server.key:/etc/nginx/server.key
+  expose:
+    - "80"
+    - "443"
+  ports:
+    - "8080:80"
+    - "443:443"
